@@ -1,0 +1,99 @@
+{% import 'admin/layout.html' as layout with context -%}
+{% extends 'admin/base.html' %}
+
+{% block head_tail %}
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.3.0/mdb.min.js"></script>
+<script type="text/javascript" src="/static/js/dish.js"></script>
+
+<script type="text/javascript" src="/static/js/var_import.js"></script>
+<script type="text/javascript">
+    ports = getVars({{ports|tojson}});
+</script>
+<style>
+    #container {
+        margin-top: 30px;
+        margin-left: auto;
+    }
+
+    @media (max-width: 1370px) {
+        #container {
+            margin-left: 150px;
+            margin-right: 50px;
+        }
+    }
+
+    [type=button]:not(:disabled), [type=reset]:not(:disabled), [type=submit]:not(:disabled), button:not(:disabled) {
+        cursor: pointer;
+    }
+
+    [type=button], [type=reset], [type=submit], button {
+        -webkit-appearance: button;
+    }
+
+    .logout {
+        padding-top: 0.75rem;
+        padding-bottom: 0.6875rem;
+        padding-left: 1.6875rem;
+        padding-right: 1.6875rem;
+        font-size: 0.875rem;
+        line-height: 1.6;
+        margin-top: 0.5rem;
+        display: block;
+        width: 100%;
+        background: #3b71ca;
+        color: #fff;
+        box-shadow: 0 4px 9px -4px #3b71ca;
+        text-transform: uppercase;
+        border-width: 0;
+        border-color: white;
+        border-radius: 0.25rem;
+        transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    }
+
+    .logout:hover {
+        box-shadow: 0 8px 9px -4px rgba(0, 0, 0, 0.15), 0 4px 18px 0 rgba(0, 0, 0, 0.1);
+        background: #386bc0;
+        color: #fff;
+    }
+
+    .logout:focus {
+        box-shadow: 0 8px 9px -4px rgba(0, 0, 0, 0.15), 0 4px 18px 0 rgba(0, 0, 0, 0.1);
+        background: #386bc0;
+        color: #fff;
+    }
+
+    .logout:active {
+        box-shadow: 0 8px 9px -4px rgba(0, 0, 0, 0.15), 0 4px 18px 0 rgba(0, 0, 0, 0.1);
+        background: #3566b6;
+        color: #fff;
+        border-color: white;
+    }
+
+    .logout:disabled {
+        color: #fff;
+        background: #3b71ca;
+        border-color: #3b71ca;
+    }
+</style>
+{% endblock %}
+{% block page_body %}
+<div>
+    <div id="container" class="container{%if config.get('FLASK_ADMIN_FLUID_LAYOUT', False) %}-fluid{% endif %}">
+
+        {% block messages %}
+        {{ layout.messages() }}
+        {% endblock %}
+
+        {% set render_ctx = h.resolve_ctx() %}
+
+        {% block body %}
+        {% endblock %}
+
+    </div>
+</div>
+<div class="fixed-bottom" style="width: 120px; padding-left: 20px; padding-bottom: 20px;">
+    <button id="logout-button" type="button" class="logout">
+        Выход
+    </button>
+</div>
+{% endblock %}

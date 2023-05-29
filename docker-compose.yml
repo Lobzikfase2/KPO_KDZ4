@@ -1,0 +1,84 @@
+version: '3'
+
+services:
+  # Микросервис авторизации
+  authorization_ms:
+    build: authorization_service
+    container_name: authorization-service
+    depends_on:
+      - authorization_ms_db
+    restart: always
+    environment:
+      AUTHORIZATION_MS_PORT: ${AUTHORIZATION_MS_PORT}
+      ORDER_MS_PORT: ${ORDER_MS_PORT}
+      JWT_TOKEN_LIFETIME: ${JWT_TOKEN_LIFETIME}
+      AUTHORIZATION_MS_WORKERS_COUNT: ${AUTHORIZATION_MS_WORKERS_COUNT}
+    ports:
+      - ${AUTHORIZATION_MS_PORT}:5000
+
+  # Микросервис по работе с заказами
+  order_ms:
+    build: order_service
+    container_name: order-service
+    depends_on:
+      - order_ms_db
+    restart: always
+    environment:
+      AUTHORIZATION_MS_PORT: ${AUTHORIZATION_MS_PORT}
+      ORDER_MS_PORT: ${ORDER_MS_PORT}
+      FILL_DISHES_TABLE_WITH_EXAMPLE_DATA: ${FILL_DISHES_TABLE_WITH_EXAMPLE_DATA}
+      ORDER_MS_WORKERS_COUNT: ${ORDER_MS_WORKERS_COUNT}
+      MIN_ORDER_COOKING_TIME: ${MIN_ORDER_COOKING_TIME}
+      MAX_ORDER_COOKING_TIME: ${MAX_ORDER_COOKING_TIME}
+    ports:
+      - ${ORDER_MS_PORT}:5000
+
+  # База данных для микросервиса авторизации
+  authorization_ms_db:
+    image: postgres
+    container_name: authorization_ms_db-service
+    # Раскомментировать, чтобы данные микросервиса авторизации
+    # сохранялись после выключения контейнера
+#    volumes:
+#      - authorization_ms_data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_USER: authorization_ms
+      POSTGRES_PASSWORD: X7nGR|toVM?G
+      POSTGRES_DB: authorization_ms_db
+    restart: always
+
+  # База данных для микросервиса по работе с заказами
+  order_ms_db:
+    image: postgres
+    container_name: order_ms_db-service
+    # Раскомментировать, чтобы данные микросервиса по работе с заказами
+    # сохранялись после выключения контейнера
+#    volumes:
+#      - order_ms_data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_USER: order_ms
+      POSTGRES_PASSWORD: HdHy?UPpEuP3
+      POSTGRES_DB: order_ms_db
+    restart: always
+
+# Инструмент управления базами данных
+#  pgadmin4:
+#    image: dpage/pgadmin4
+#    container_name: pgadmin4-service2
+#    depends_on:
+#      - authorization_ms_db
+#      - order_ms_db
+#    environment:
+#      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+#      PGADMIN_DEFAULT_PASSWORD: admin
+#      PGADMIN_LISTEN_ADDRESS: 0.0.0.0
+#      PGADMIN_LISTEN_PORT: 5555
+#    restart: always
+#    ports:
+#      - '5555:5555'
+
+# Раскомментировать, чтобы данные микросервисов
+# сохранялись после выключения контейнера
+#volumes:
+#  authorization_ms_data:
+#  order_ms_data:
