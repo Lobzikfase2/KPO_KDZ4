@@ -1,0 +1,18 @@
+# Порт микросервиса авторизации
+AUTHORIZATION_MS_PORT=5551
+# Порт микросервиса заказов
+ORDER_MS_PORT=5552
+
+# Количество экземпляров сервера микросервиса авторизации
+AUTHORIZATION_MS_WORKERS_COUNT=3
+# Количество экземпляров сервера микросервиса заказов
+ORDER_MS_WORKERS_COUNT=3
+
+# Время жизни JWT токена в минутах
+JWT_TOKEN_LIFETIME=3
+# Минимальное время приготовления заказа в секундах
+MIN_ORDER_COOKING_TIME=30
+# Максимальное время приготовления заказа в секундах
+MAX_ORDER_COOKING_TIME=90
+# Заполнять ли таблицу блюд тестовыми данными
+FILL_DISHES_TABLE_WITH_EXAMPLE_DATA=true
